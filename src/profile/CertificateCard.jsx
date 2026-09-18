@@ -1,14 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { getConfig } from '@edx/frontend-platform';
 import { FormattedDate, FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { Hyperlink } from '@openedx/paragon';
 import get from 'lodash.get';
 
 import classNames from 'classnames';
-import professionalCertificateSVG from './assets/professional-certificate.svg';
-import verifiedCertificateSVG from './assets/verified-certificate.svg';
 import messages from './Certificates.messages';
-import { useIsOnMobileScreen } from './data/hooks';
+
+const VerifiedBadgeIcon = (props) => (
+  <svg
+    width={13}
+    height={13}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2.4}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <path d="M12 2l2.6 1.9 3.2-.2.9 3.1 2.6 1.9-1.3 2.9 1.3 2.9-2.6 1.9-.9 3.1-3.2-.2L12 22l-2.6-1.9-3.2.2-.9-3.1L2.7 15.3 4 12.4 2.7 9.5l2.6-1.9.9-3.1 3.2.2z" />
+    <polyline points="8.7 12.2 11 14.4 15.4 9.9" />
+  </svg>
+);
 
 const CertificateCard = ({
   certificateType,
@@ -20,107 +36,65 @@ const CertificateCard = ({
   uuid,
 }) => {
   const intl = useIntl();
-
-  const certificateIllustration = {
-    professional: professionalCertificateSVG,
-    'no-id-professional': professionalCertificateSVG,
-    verified: verifiedCertificateSVG,
-    honor: null,
-    audit: null,
-  }[certificateType] || null;
-
-  const isMobileView = useIsOnMobileScreen();
+  const isVerified = certificateType === 'verified';
+  const { LOGO_URL } = getConfig();
 
   return (
-    <div
+    <article
       key={`${modifiedDate}-${courseId}`}
-      className="col-auto d-flex align-items-center p-0"
+      className={classNames('certificate', { 'certificate-verified': isVerified })}
+      style={isVerified && LOGO_URL ? { '--certificate-seal': `url(${LOGO_URL})` } : undefined}
     >
-      <div className="col certificate p-4 border-light-400 bg-light-200 w-100 h-100">
-        <div
-          className="certificate-type-illustration"
-          style={{ backgroundImage: `url(${certificateIllustration})` }}
-        />
-        <div className={classNames(
-          'd-flex flex-column position-relative p-0',
-          { 'max-width-304px': isMobileView },
-          { 'width-314px': !isMobileView },
-        )}
-        >
-          <div className="w-100 color-black">
-            <p className={classNames([
-              'mb-0 font-weight-normal',
-              isMobileView ? 'x-small' : 'small',
-            ])}
-            >
-              {intl.formatMessage(get(
-                messages,
-                `profile.certificates.types.${certificateType}`,
-                messages['profile.certificates.types.unknown'],
-              ))}
-            </p>
-            <p className={classNames([
-              'm-0 color-black',
-              isMobileView ? 'h5' : 'h4',
-            ])}
-            >
-              {courseDisplayName}
-            </p>
-            <p className={classNames([
-              'mb-0',
-              isMobileView ? 'x-small' : 'small',
-            ])}
-            >
-              <FormattedMessage
-                id="profile.certificate.organization.label"
-                defaultMessage="From"
-              />
-            </p>
-            <h5 className="mb-0 color-black">{courseOrganization}</h5>
-            <p className={classNames([
-              'mb-0',
-              isMobileView ? 'x-small' : 'small',
-            ])}
-            >
-              <FormattedMessage
-                id="profile.certificate.completion.date.label"
-                defaultMessage="Completed on {date}"
-                values={{
-                  date: <FormattedDate value={new Date(modifiedDate)} />,
-                }}
-              />
-            </p>
-          </div>
-          <div className="pt-3">
-            <Hyperlink
-              destination={downloadUrl}
-              target="_blank"
-              showLaunchIcon={false}
-              className={classNames(
-                'btn btn-primary font-weight-normal px-4 py-10px',
-                { 'btn-sm': isMobileView },
-              )}
-            >
-              {intl.formatMessage(messages['profile.certificates.view.certificate'])}
-            </Hyperlink>
-          </div>
-          <p
-            className={classNames([
-              'mb-0 pt-3',
-              isMobileView ? 'x-small' : 'small',
-            ])}
-          >
-            <FormattedMessage
-              id="profile.certificate.uuid"
-              defaultMessage="Credential ID {certificate_uuid}"
-              values={{
-                certificate_uuid: uuid,
-              }}
-            />
-          </p>
-        </div>
+      <div>
+        <p className={classNames('certificate-eyebrow', { 'certificate-eyebrow-verified': isVerified })}>
+          {isVerified && <VerifiedBadgeIcon />}
+          {intl.formatMessage(get(
+            messages,
+            `profile.certificates.types.${certificateType}`,
+            messages['profile.certificates.types.unknown'],
+          ))}
+        </p>
+        <p className="certificate-title">
+          {courseDisplayName}
+        </p>
       </div>
-    </div>
+      <p className="certificate-meta">
+        <FormattedMessage
+          id="profile.certificate.organization.label"
+          defaultMessage="From"
+        />
+        {' '}
+        <strong>{courseOrganization}</strong>
+        <br />
+        <FormattedMessage
+          id="profile.certificate.completion.date.label"
+          defaultMessage="Completed on {date}"
+          values={{
+            date: <FormattedDate value={new Date(modifiedDate)} />,
+          }}
+        />
+        {isVerified && (
+          <>
+            <br />
+            <span className="certificate-meta-verified">
+              {intl.formatMessage(messages['profile.certificate.verified.meta'])}
+            </span>
+          </>
+        )}
+      </p>
+      <Hyperlink
+        destination={downloadUrl}
+        target="_blank"
+        showLaunchIcon={false}
+        className="btn btn-primary font-weight-normal px-4 py-10px"
+      >
+        {intl.formatMessage(messages['profile.certificates.view.certificate'])}
+      </Hyperlink>
+      <div className="certificate-id">
+        <span>{intl.formatMessage(messages['profile.certificate.uuid.label'])}</span>
+        <code>{uuid}</code>
+      </div>
+    </article>
   );
 };
 

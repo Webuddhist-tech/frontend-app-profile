@@ -53,7 +53,7 @@ const Example = ({
       <h3 className="h3">Example Additional Profile Fields Slot</h3>
 
       <SwitchContent
-        className="pt-40px"
+        className="pf-field"
         expression={formMode}
         cases={{
           editing: (
