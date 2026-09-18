@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { Form } from '@openedx/paragon';
 
-import classNames from 'classnames';
 import messages from './Bio.messages';
 
 import FormControls from './elements/FormControls';
@@ -17,7 +16,6 @@ import {
   useCloseOpenHandler,
   useHandleChange,
   useHandleSubmit,
-  useIsOnMobileScreen,
   useIsVisibilityEnabled,
 } from '../data/hooks';
 
@@ -33,7 +31,6 @@ const Bio = ({
   closeHandler,
   openHandler,
 }) => {
-  const isMobileView = useIsOnMobileScreen();
   const isVisibilityEnabled = useIsVisibilityEnabled();
   const intl = useIntl();
 
@@ -44,9 +41,7 @@ const Bio = ({
 
   return (
     <SwitchContent
-      className={classNames([
-        isMobileView ? 'pt-40px' : 'pt-0',
-      ])}
+      className="pf-field"
       expression={editMode}
       cases={{
         editing: (

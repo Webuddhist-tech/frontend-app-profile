@@ -9,9 +9,78 @@ import {
 } from '@openedx/paragon';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 
-import { PhotoCamera } from '@openedx/paragon/icons';
 import { ReactComponent as DefaultAvatar } from '../assets/avatar.svg';
 import messages from './ProfileAvatar.messages';
+
+const CameraIcon = (props) => (
+  <svg
+    width={24}
+    height={24}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={1.8}
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <path d="M4 7h3l2-2.5h6L17 7h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z" />
+    <circle cx="12" cy="13" r="3.6" />
+  </svg>
+);
+
+const UploadIcon = (props) => (
+  <svg
+    width={16}
+    height={16}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={1.8}
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <path d="M12 15V3" />
+    <path d="M7 8l5-5 5 5" />
+    <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" />
+  </svg>
+);
+
+const SwapIcon = (props) => (
+  <svg
+    width={16}
+    height={16}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={1.8}
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+    <path d="M3 3v5h5" />
+    <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
+    <path d="M16 16h5v5" />
+  </svg>
+);
+
+const TrashIcon = (props) => (
+  <svg
+    width={16}
+    height={16}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={1.8}
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <path d="M4 7h16" />
+    <path d="M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3" />
+    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12" />
+    <path d="M10 11v6" />
+    <path d="M14 11v6" />
+  </svg>
+);
 
 const ProfileAvatar = ({
   src,
@@ -83,22 +152,28 @@ const ProfileAvatar = ({
               isActive
               id="dropdown-toggle-with-iconbutton"
               as={IconButton}
-              src={PhotoCamera}
+              src={CameraIcon}
               iconAs={Icon}
               variant="primary"
               className="shadow-sm"
             />
           </OverlayTrigger>
-          <Dropdown.Menu className="min-width-179px p-0 m-0">
+          <Dropdown.Menu>
             <Dropdown.Item type="button" onClick={onClickUpload}>
-              <FormattedMessage
-                id="profile.profileavatar.upload-button"
-                defaultMessage="Upload photo"
-                description="Upload photo button"
-              />
+              {isDefault ? <UploadIcon /> : <SwapIcon />}
+              {isDefault ? (
+                <FormattedMessage
+                  id="profile.profileavatar.upload-button"
+                  defaultMessage="Upload photo"
+                  description="Upload photo button"
+                />
+              ) : (
+                intl.formatMessage(messages['profile.profileavatar.change-button'])
+              )}
             </Dropdown.Item>
             {!isDefault && (
               <Dropdown.Item type="button" onClick={onClickDelete}>
+                <TrashIcon />
                 <FormattedMessage
                   id="profile.profileavatar.remove.button"
                   defaultMessage="Remove photo"
