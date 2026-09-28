@@ -26,6 +26,16 @@ const messages = defineMessages({
     defaultMessage: 'Certificate',
     description: 'The string to display when a certificate is of an unknown type',
   },
+  'profile.certificate.verified.meta': {
+    id: 'profile.certificate.verified.meta',
+    defaultMessage: 'Identity verified · Graded coursework',
+    description: 'Additional detail shown only on verified certificates',
+  },
+  'profile.certificate.uuid.label': {
+    id: 'profile.certificate.uuid.label',
+    defaultMessage: 'Credential ID',
+    description: 'Label above a certificate\'s credential ID',
+  },
 });
 
 export default messages;

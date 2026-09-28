@@ -8,8 +8,8 @@ const messages = defineMessages({
   },
   'profile.profileavatar.change-button': {
     id: 'profile.profileavatar.change-button',
-    defaultMessage: 'Change',
-    description: 'Change photo button',
+    defaultMessage: 'Change photo',
+    description: 'Change photo button, shown instead of Upload photo when the user already has a photo',
   },
   'profile.profileavatar.tooltip.edit': {
     id: 'profile.profileavatar.tooltip.edit',

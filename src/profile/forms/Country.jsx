@@ -47,7 +47,7 @@ const Country = ({
 
   return (
     <SwitchContent
-      className="pt-40px"
+      className="pf-field"
       expression={editMode}
       cases={{
         editing: (

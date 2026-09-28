@@ -151,9 +151,9 @@ const SocialLinks = ({
       cases={{
         empty: (
           <div>
-            <div>
+            <div className="pf-col">
               {socialLinks.map(({ platform }) => (
-                <div key={platform} className="pt-40px">
+                <div key={platform} className="pf-field">
                   <p data-hj-suppress className="h5 font-weight-bold m-0 pb-1.5">
                     {platformDisplayInfo[platform].name}
                   </p>
@@ -174,11 +174,11 @@ const SocialLinks = ({
         ),
         static: (
           <div>
-            <div>
+            <div className="pf-col">
               {socialLinks
                 .filter(({ socialLink }) => Boolean(socialLink))
                 .map(({ platform, socialLink }) => (
-                  <div key={platform} className="pt-40px">
+                  <div key={platform} className="pf-field">
                     <p data-hj-suppress className="h5 font-weight-bold m-0 pb-1.5">
                       {platformDisplayInfo[platform].name}
                     </p>
@@ -193,9 +193,9 @@ const SocialLinks = ({
         ),
         editable: (
           <div>
-            <div>
+            <div className="pf-col">
               {socialLinks.map(({ platform, socialLink }) => (
-                <div key={platform} className="pt-40px">
+                <div key={platform} className="pf-field">
                   <p data-hj-suppress className="h5 font-weight-bold m-0 pb-1.5">
                     {platformDisplayInfo[platform].name}
                   </p>
@@ -207,9 +207,9 @@ const SocialLinks = ({
         ),
         editing: (
           <div>
-            <div>
+            <div className="pf-col">
               {socialLinks.map(({ platform, socialLink }) => (
-                <div key={platform} className="pt-40px">
+                <div key={platform} className="pf-field">
                   <p data-hj-suppress className="h5 font-weight-bold m-0 pb-2.5">
                     {platformDisplayInfo[platform].name}
                   </p>
